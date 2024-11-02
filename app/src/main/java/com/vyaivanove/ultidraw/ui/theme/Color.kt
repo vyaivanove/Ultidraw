@@ -1,0 +1,15 @@
+package com.vyaivanove.myapplication.ui.theme
+
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.ui.graphics.Color
+
+val ColorScheme = darkColorScheme(
+    background = Color.Black
+)
+
+fun buttonColor(enabled: Boolean = true) = if (enabled) {
+    Color.White
+} else {
+    Color(0xFF8B8B8B)
+}
+

@@ -1,6 +1,7 @@
 package com.vyaivanove.ultidraw.editor.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -21,6 +22,8 @@ fun Editor() {
                     .padding(top = 8.dp)
             ) {
                 EditorToolbar(modifier = Modifier.padding(horizontal = 16.dp))
+                Spacer(modifier = Modifier.weight(1f))
+                EditorToolPanel(modifier = Modifier.padding(horizontal = 16.dp))
             }
         }
     }

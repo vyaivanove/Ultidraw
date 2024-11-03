@@ -7,9 +7,7 @@ val ColorScheme = darkColorScheme(
     background = Color.Black
 )
 
-fun buttonColor(enabled: Boolean = true) = if (enabled) {
-    Color.White
-} else {
-    Color(0xFF8B8B8B)
-}
+fun buttonColor(enabled: Boolean = true) = if (enabled) Color.White else Color(0xFF8B8B8B)
+
+fun toolColor(selected: Boolean = false) = if (selected) Color(0xFFA8DB10) else Color.White
 

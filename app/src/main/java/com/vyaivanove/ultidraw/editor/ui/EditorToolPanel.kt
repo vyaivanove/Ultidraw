@@ -22,12 +22,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.vyaivanove.ultidraw.R
 import com.vyaivanove.ultidraw.ui.theme.toolColor
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
-fun EditorToolPanel(modifier: Modifier = Modifier) {
+fun EditorToolPanel(
+    modifier: Modifier = Modifier,
+    tools: List<EditorTool>,
+    selectedTool: EditorTool,
+    onSelectTool: (EditorTool) -> Unit
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
@@ -35,10 +38,15 @@ fun EditorToolPanel(modifier: Modifier = Modifier) {
     ) {
         val modifier = Modifier.size(32.dp)
 
-        EditorToolPanelIconButton(modifier, icon = R.drawable.editor_tool_panel_pencil) {}
-        EditorToolPanelIconButton(modifier, icon = R.drawable.editor_tool_panel_brush) {}
-        EditorToolPanelIconButton(modifier, icon = R.drawable.editor_tool_panel_eraser) {}
-        EditorToolPanelColorPickerButton(modifier, color = Color.White) {}
+        tools.forEach {
+            EditorToolPanelIconButton(modifier, icon = it.icon, selected = it === selectedTool) {
+                if (it !== selectedTool) {
+                    onSelectTool(it)
+                }
+            }
+        }
+
+        EditorToolPanelColorPickerButton(modifier, color = selectedTool.color) {}
     }
 }
 
@@ -78,5 +86,16 @@ private fun EditorToolPanelColorPickerButton(
             .clip(CircleShape)
             .background(color)
             .run { if (selected) border(2.dp, toolColor(selected = true), CircleShape) else this }
+    )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
+@Composable
+private fun EditorToolPanelPreview() {
+    val tool = EditorTool.Pencil(strokeWidth = 10f, color = Color.Red)
+    EditorToolPanel(
+        tools = listOf(tool),
+        selectedTool = tool,
+        onSelectTool = {}
     )
 }

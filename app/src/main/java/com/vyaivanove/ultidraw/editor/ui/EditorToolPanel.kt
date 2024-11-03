@@ -29,7 +29,9 @@ fun EditorToolPanel(
     modifier: Modifier = Modifier,
     tools: List<EditorTool>,
     selectedTool: EditorTool,
-    onSelectTool: (EditorTool) -> Unit
+    onSelectTool: (EditorTool) -> Unit,
+    onChangeTool: () -> Unit,
+    onChangeColor: () -> Unit
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -42,11 +44,17 @@ fun EditorToolPanel(
             EditorToolPanelIconButton(modifier, icon = it.icon, selected = it === selectedTool) {
                 if (it !== selectedTool) {
                     onSelectTool(it)
+                } else {
+                    onChangeTool()
                 }
             }
         }
 
-        EditorToolPanelColorPickerButton(modifier, color = selectedTool.color) {}
+        EditorToolPanelColorPickerButton(
+            modifier,
+            color = selectedTool.color,
+            onClick = onChangeColor
+        )
     }
 }
 
@@ -96,6 +104,8 @@ private fun EditorToolPanelPreview() {
     EditorToolPanel(
         tools = listOf(tool),
         selectedTool = tool,
-        onSelectTool = {}
+        onSelectTool = {},
+        onChangeTool = {},
+        onChangeColor = {}
     )
 }

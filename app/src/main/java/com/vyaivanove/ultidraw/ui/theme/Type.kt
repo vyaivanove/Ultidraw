@@ -1,4 +1,4 @@
-package com.vyaivanove.myapplication.ui.theme
+package com.vyaivanove.ultidraw.ui.theme
 
 import androidx.compose.material3.Typography
 

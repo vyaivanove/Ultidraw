@@ -11,3 +11,4 @@ fun buttonColor(enabled: Boolean = true) = if (enabled) Color.White else Color(0
 
 fun toolColor(selected: Boolean = false) = if (selected) Color(0xFFA8DB10) else Color.White
 
+val popupBackgroundColor = Color(0xBFB3B3B3)

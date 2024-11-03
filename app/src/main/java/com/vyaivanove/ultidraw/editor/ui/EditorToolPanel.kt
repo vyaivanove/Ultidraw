@@ -22,16 +22,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.vyaivanove.ultidraw.editor.state.EditorState
 import com.vyaivanove.ultidraw.ui.theme.toolColor
 
 @Composable
 fun EditorToolPanel(
     modifier: Modifier = Modifier,
-    tools: List<EditorTool>,
-    selectedTool: EditorTool,
-    onSelectTool: (EditorTool) -> Unit,
-    onChangeTool: () -> Unit,
-    onChangeColor: () -> Unit
+    state: EditorState
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -40,20 +37,26 @@ fun EditorToolPanel(
     ) {
         val modifier = Modifier.size(32.dp)
 
-        tools.forEach {
-            EditorToolPanelIconButton(modifier, icon = it.icon, selected = it === selectedTool) {
-                if (it !== selectedTool) {
-                    onSelectTool(it)
+        state.toolState.tools.forEach {
+            EditorToolPanelIconButton(
+                modifier,
+                icon = it.icon,
+                selected = it === state.toolState.selectedTool
+            ) {
+                if (it !== state.toolState.selectedTool) {
+                    state.toolState.selectTool(it)
                 } else {
-                    onChangeTool()
+                    state.popupState.showToolEditor()
                 }
             }
         }
 
         EditorToolPanelColorPickerButton(
             modifier,
-            color = selectedTool.color,
-            onClick = onChangeColor
+            color = state.toolState.selectedTool.color,
+            selected = state.popupState.isShowingColorPicker,
+            enabled = !state.toolState.selectedTool.eraser,
+            onClick = state.popupState::showColorPicker
         )
     }
 }
@@ -82,30 +85,32 @@ private fun EditorToolPanelColorPickerButton(
     modifier: Modifier = Modifier,
     color: Color,
     selected: Boolean = false,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Box(
         modifier = modifier
             .clickable(
+                enabled = enabled,
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(bounded = false, radius = 24.dp)
             )
             .clip(CircleShape)
             .background(color)
-            .run { if (selected) border(2.dp, toolColor(selected = true), CircleShape) else this }
+            .run {
+                if (enabled) {
+                    val borderColor = if (selected) toolColor(selected = true) else Color.White
+                    border(1.dp, borderColor, CircleShape)
+                } else {
+                    this
+                }
+            }
     )
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
 private fun EditorToolPanelPreview() {
-    val tool = EditorTool.Pencil(strokeWidth = 10f, color = Color.Red)
-    EditorToolPanel(
-        tools = listOf(tool),
-        selectedTool = tool,
-        onSelectTool = {},
-        onChangeTool = {},
-        onChangeColor = {}
-    )
+    EditorToolPanel(state = EditorState())
 }

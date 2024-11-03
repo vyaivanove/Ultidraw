@@ -1,4 +1,4 @@
-package com.vyaivanove.ultidraw.editor.ui
+package com.vyaivanove.ultidraw.editor.ui.popup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

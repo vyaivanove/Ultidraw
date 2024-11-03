@@ -22,14 +22,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vyaivanove.ultidraw.R
+import com.vyaivanove.ultidraw.editor.state.EditorPath
+import com.vyaivanove.ultidraw.editor.state.EditorState
 import com.vyaivanove.ultidraw.ui.theme.ColorScheme
 
 @Composable
 fun EditorCanvas(
     modifier: Modifier = Modifier,
-    paths: List<EditorPath>,
-    onAddPath: (position: Offset) -> Unit,
-    onUpdatePath: (offset: Offset) -> Unit
+    state: EditorState
 ) {
     Box(modifier = modifier.border(1.dp, ColorScheme.background, RoundedCornerShape(20.dp))) {
         Image(
@@ -40,9 +40,16 @@ fun EditorCanvas(
 
         Canvas(
             modifier = Modifier.matchParentSize(),
-            paths = paths,
-            onDragStart = onAddPath,
-            onDrag = onUpdatePath
+            paths = state.canvasState.paths,
+            onDragStart = {
+                state.canvasState.addPath(
+                    EditorPath(
+                        position = it,
+                        tool = state.toolState.selectedTool
+                    )
+                )
+            },
+            onDrag = state.canvasState::updatePath
         )
     }
 }
@@ -86,5 +93,5 @@ private fun Canvas(
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
 private fun EditorCanvasPreview() {
-    EditorCanvas(paths = emptyList(), onAddPath = {}, onUpdatePath = {})
+    EditorCanvas(state = EditorState())
 }

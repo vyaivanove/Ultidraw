@@ -17,15 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vyaivanove.ultidraw.R
+import com.vyaivanove.ultidraw.editor.state.EditorState
 import com.vyaivanove.ultidraw.ui.theme.buttonColor
 
 @Composable
 fun EditorToolbar(
     modifier: Modifier = Modifier,
-    undoEnabled: Boolean,
-    redoEnabled: Boolean,
-    onUndo: () -> Unit,
-    onRedo: () -> Unit
+    state: EditorState
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -37,15 +35,15 @@ fun EditorToolbar(
 
             ToolbarIconButton(
                 modifier,
-                enabled = undoEnabled,
+                enabled = state.canvasState.isUndoEnabled,
                 icon = R.drawable.editor_toolbar_undo,
-                onClick = onUndo
+                onClick = state.canvasState::undo
             )
             ToolbarIconButton(
                 modifier,
-                enabled = redoEnabled,
+                enabled = state.canvasState.isRedoEnabled,
                 icon = R.drawable.editor_toolbar_redo,
-                onClick = onRedo
+                onClick = state.canvasState::redo
             )
         }
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -87,10 +85,5 @@ private fun ToolbarIconButton(
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
 private fun EditorToolbarPreview() {
-    EditorToolbar(
-        undoEnabled = true,
-        redoEnabled = false,
-        onUndo = {},
-        onRedo = {}
-    )
+    EditorToolbar(state = EditorState())
 }

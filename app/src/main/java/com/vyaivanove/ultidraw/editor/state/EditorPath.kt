@@ -1,4 +1,4 @@
-package com.vyaivanove.ultidraw.editor.ui
+package com.vyaivanove.ultidraw.editor.state
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path

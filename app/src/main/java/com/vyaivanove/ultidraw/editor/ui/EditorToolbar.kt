@@ -19,9 +19,14 @@ import androidx.compose.ui.unit.dp
 import com.vyaivanove.ultidraw.R
 import com.vyaivanove.ultidraw.ui.theme.buttonColor
 
-@Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
-fun EditorToolbar(modifier: Modifier = Modifier) {
+fun EditorToolbar(
+    modifier: Modifier = Modifier,
+    undoEnabled: Boolean,
+    redoEnabled: Boolean,
+    onUndo: () -> Unit,
+    onRedo: () -> Unit
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -30,8 +35,18 @@ fun EditorToolbar(modifier: Modifier = Modifier) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             val modifier = Modifier.size(24.dp)
 
-            ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_undo) {}
-            ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_redo) {}
+            ToolbarIconButton(
+                modifier,
+                enabled = undoEnabled,
+                icon = R.drawable.editor_toolbar_undo,
+                onClick = onUndo
+            )
+            ToolbarIconButton(
+                modifier,
+                enabled = redoEnabled,
+                icon = R.drawable.editor_toolbar_redo,
+                onClick = onRedo
+            )
         }
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val modifier = Modifier.size(32.dp)
@@ -66,5 +81,16 @@ private fun ToolbarIconButton(
         painter = painterResource(id = icon),
         tint = buttonColor(enabled = enabled),
         contentDescription = null,
+    )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
+@Composable
+private fun EditorToolbarPreview() {
+    EditorToolbar(
+        undoEnabled = true,
+        redoEnabled = false,
+        onUndo = {},
+        onRedo = {}
     )
 }

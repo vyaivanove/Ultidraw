@@ -31,6 +31,7 @@ fun Editor() {
     var tool by remember { mutableStateOf(tools.first()) }
 
     val paths = remember { mutableStateListOf<EditorPath>() }
+    val undonePaths = remember { mutableStateListOf<EditorPath>() }
 
     Theme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -42,10 +43,18 @@ fun Editor() {
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                EditorToolbar()
+                EditorToolbar(
+                    undoEnabled = paths.isNotEmpty(),
+                    redoEnabled = undonePaths.isNotEmpty(),
+                    onUndo = { undonePaths.add(paths.removeAt(paths.lastIndex)) },
+                    onRedo = { paths.add(undonePaths.removeAt(undonePaths.lastIndex)) }
+                )
                 EditorCanvas(
                     paths = paths,
-                    onAddPath = { paths.add(EditorPath(it, tool)) },
+                    onAddPath = {
+                        undonePaths.clear()
+                        paths.add(EditorPath(it, tool))
+                    },
                     onUpdatePath = {
                         val path = paths.removeAt(paths.lastIndex)
                         path.quadraticDrag(it)

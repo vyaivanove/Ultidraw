@@ -1,5 +1,6 @@
 package com.vyaivanove.ultidraw.editor.state
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,8 +15,7 @@ class EditorPopupState {
     var state by mutableStateOf(States.Closed)
         private set
 
-    val isVisible
-        get() = state != States.Closed
+    val isVisible by derivedStateOf { state != States.Closed }
 
     val isShowingColorPicker
         get() = state == States.ColorPicker

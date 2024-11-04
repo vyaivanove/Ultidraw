@@ -1,5 +1,7 @@
 package com.vyaivanove.ultidraw.editor.state
 
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.geometry.Offset
 
@@ -7,11 +9,9 @@ class EditorCanvasState {
     val paths = mutableStateListOf<EditorPath>()
     private val undonePaths = mutableStateListOf<EditorPath>()
 
-    val isUndoEnabled
-        get() = paths.isNotEmpty()
+    val isUndoEnabled by derivedStateOf { paths.isNotEmpty() }
 
-    val isRedoEnabled
-        get() = undonePaths.isNotEmpty()
+    val isRedoEnabled by derivedStateOf { undonePaths.isNotEmpty() }
 
     fun undo() {
         undonePaths.add(paths.removeAt(paths.lastIndex))

@@ -17,13 +17,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vyaivanove.ultidraw.R
+import com.vyaivanove.ultidraw.editor.state.BackStackController
 import com.vyaivanove.ultidraw.editor.state.EditorState
 import com.vyaivanove.ultidraw.ui.theme.buttonColor
 
 @Composable
 fun EditorToolbar(
     modifier: Modifier = Modifier,
-    state: EditorState
+    state: EditorState,
+    backStackController: BackStackController
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -35,22 +37,30 @@ fun EditorToolbar(
 
             ToolbarIconButton(
                 modifier,
-                enabled = state.canvasState.isUndoEnabled,
+                enabled = backStackController.isUndoEnabled,
                 icon = R.drawable.editor_toolbar_undo,
-                onClick = state.canvasState::undo
+                onClick = backStackController::undo
             )
             ToolbarIconButton(
                 modifier,
-                enabled = state.canvasState.isRedoEnabled,
+                enabled = backStackController.isRedoEnabled,
                 icon = R.drawable.editor_toolbar_redo,
-                onClick = state.canvasState::redo
+                onClick = backStackController::redo
             )
         }
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val modifier = Modifier.size(32.dp)
 
-            ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_delete) {}
-            ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_add) {}
+            ToolbarIconButton(
+                modifier,
+                icon = R.drawable.editor_toolbar_delete,
+                onClick = state::removeCanvas
+            )
+            ToolbarIconButton(
+                modifier,
+                icon = R.drawable.editor_toolbar_add,
+                onClick = state::addCanvas
+            )
             ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_layers) {}
         }
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -85,5 +95,6 @@ private fun ToolbarIconButton(
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
 private fun EditorToolbarPreview() {
-    EditorToolbar(state = EditorState())
+    val state = EditorState()
+    EditorToolbar(state = state, backStackController = BackStackController(state))
 }

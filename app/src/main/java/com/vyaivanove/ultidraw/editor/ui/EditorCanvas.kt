@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Paint
@@ -38,18 +38,31 @@ fun EditorCanvas(
             contentDescription = null
         )
 
+        state.previousCanvasState?.let {
+            Canvas(
+                modifier = Modifier
+                    .matchParentSize()
+                    .alpha(0.5f),
+                paths = it.paths
+            )
+        }
+
         Canvas(
-            modifier = Modifier.matchParentSize(),
-            paths = state.canvasState.paths,
-            onDragStart = {
-                state.canvasState.addPath(
-                    EditorPath(
-                        position = it,
-                        tool = state.toolState.selectedTool
+            modifier = Modifier
+                .matchParentSize()
+                .pointerInput(Unit) {
+                    detectDragGestures(
+                        onDragStart = {
+                            val path =
+                                EditorPath(position = it, tool = state.toolState.selectedTool)
+                            state.canvasState.addPath(path)
+                        },
+                        onDrag = { _, position ->
+                            state.canvasState.updatePath(position)
+                        }
                     )
-                )
-            },
-            onDrag = state.canvasState::updatePath
+                },
+            paths = state.canvasState.paths
         )
     }
 }
@@ -57,17 +70,9 @@ fun EditorCanvas(
 @Composable
 private fun Canvas(
     modifier: Modifier = Modifier,
-    paths: List<EditorPath>,
-    onDragStart: (position: Offset) -> Unit,
-    onDrag: (offset: Offset) -> Unit
+    paths: List<EditorPath>
 ) {
-    Canvas(
-        modifier = modifier.pointerInput(Unit) {
-            detectDragGestures(onDragStart = onDragStart) { _, position ->
-                onDrag(position)
-            }
-        }
-    ) {
+    Canvas(modifier = modifier) {
         drawContext.canvas.withSaveLayer(size.toRect(), Paint()) {
             val cornersClip = Path().apply {
                 addRoundRect(RoundRect(size.toRect(), CornerRadius(20.dp.toPx())))

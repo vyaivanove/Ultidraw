@@ -5,8 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.geometry.Offset
 
-class EditorCanvasState {
-    val paths = mutableStateListOf<EditorPath>()
+class EditorCanvasState(val paths: MutableList<EditorPath> = mutableStateListOf<EditorPath>()) {
     private val undonePaths = mutableStateListOf<EditorPath>()
 
     val isUndoEnabled by derivedStateOf { paths.isNotEmpty() }
@@ -30,5 +29,11 @@ class EditorCanvasState {
         val path = paths.removeAt(paths.lastIndex)
         path.quadraticDrag(offset)
         paths.add(path)
+    }
+
+    companion object {
+        fun EditorCanvasState.shallowCopy() = EditorCanvasState(
+            paths = mutableStateListOf<EditorPath>().apply { addAll(paths) }
+        )
     }
 }

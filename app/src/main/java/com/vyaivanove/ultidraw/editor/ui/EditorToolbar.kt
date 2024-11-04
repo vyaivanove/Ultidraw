@@ -80,6 +80,11 @@ private fun EditorToolbarCanvasGroup(state: EditorState.Edit) {
             icon = R.drawable.editor_toolbar_add,
             onClick = state::addCanvas
         )
+        ToolbarIconButton(
+            modifier,
+            icon = R.drawable.editor_toolbar_duplicate,
+            onClick = state::duplicateCanvas
+        )
         ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_layers) {}
     }
 }

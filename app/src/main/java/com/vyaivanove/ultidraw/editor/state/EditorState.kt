@@ -4,6 +4,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.vyaivanove.ultidraw.editor.state.EditorCanvasState.Companion.shallowCopy
 import com.vyaivanove.ultidraw.util.DoublyLinkedList
 import com.vyaivanove.ultidraw.util.DoublyLinkedList.Node
 
@@ -29,6 +30,10 @@ sealed class EditorState() {
 
         fun addCanvas() {
             canvasNode = canvasStates.addAfter(canvasNode, EditorCanvasState())
+        }
+
+        fun duplicateCanvas() {
+            canvasNode = canvasStates.addAfter(canvasNode, canvasNode.value.shallowCopy())
         }
 
         fun removeCanvas() {

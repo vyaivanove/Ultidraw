@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vyaivanove.ultidraw.editor.state.EditorState
-import com.vyaivanove.ultidraw.editor.state.EditorStateHolder
+import com.vyaivanove.ultidraw.editor.state.EditorViewModel
 import com.vyaivanove.ultidraw.ui.theme.Theme
 import kotlinx.coroutines.delay
 
@@ -25,7 +25,7 @@ private const val DELAY_PER_FRAME = 1000L / FRAME_RATE
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Editor() {
-    val stateHolder = remember { EditorStateHolder() }
+    val stateHolder = viewModel<EditorViewModel>()
     val state = stateHolder.state
 
     if (state is EditorState.View) {

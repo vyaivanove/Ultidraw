@@ -4,8 +4,9 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 
-class EditorStateHolder {
+class EditorViewModel : ViewModel() {
     private val editState = EditorState.Edit {
         viewState = createViewState()
     }

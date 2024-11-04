@@ -24,51 +24,83 @@ import com.vyaivanove.ultidraw.ui.theme.buttonColor
 @Composable
 fun EditorToolbar(
     modifier: Modifier = Modifier,
-    state: EditorState,
-    backStackController: BackStackController
+    state: EditorState
 ) {
+    val horizontalArrangement = when (state) {
+        is EditorState.Edit -> Arrangement.SpaceBetween
+        is EditorState.View -> Arrangement.End
+    }
+
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = horizontalArrangement,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            val modifier = Modifier.size(24.dp)
-
-            ToolbarIconButton(
-                modifier,
-                enabled = backStackController.isUndoEnabled,
-                icon = R.drawable.editor_toolbar_undo,
-                onClick = backStackController::undo
-            )
-            ToolbarIconButton(
-                modifier,
-                enabled = backStackController.isRedoEnabled,
-                icon = R.drawable.editor_toolbar_redo,
-                onClick = backStackController::redo
-            )
+        if (state is EditorState.Edit) {
+            EditorToolbarBackStackGroup(state.backStackController)
+            EditorToolbarCanvasGroup(state)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            val modifier = Modifier.size(32.dp)
+        EditorToolbarPlaybackGroup(state)
+    }
 
-            ToolbarIconButton(
-                modifier,
-                icon = R.drawable.editor_toolbar_delete,
-                onClick = state::removeCanvas
-            )
-            ToolbarIconButton(
-                modifier,
-                icon = R.drawable.editor_toolbar_add,
-                onClick = state::addCanvas
-            )
-            ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_layers) {}
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            val modifier = Modifier.size(32.dp)
+}
 
-            ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_stop) {}
-            ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_play) {}
-        }
+@Composable
+private fun EditorToolbarBackStackGroup(backStackController: BackStackController) {
+    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        val modifier = Modifier.size(24.dp)
+
+        ToolbarIconButton(
+            modifier,
+            enabled = backStackController.isUndoEnabled,
+            icon = R.drawable.editor_toolbar_undo,
+            onClick = backStackController::undo
+        )
+        ToolbarIconButton(
+            modifier,
+            enabled = backStackController.isRedoEnabled,
+            icon = R.drawable.editor_toolbar_redo,
+            onClick = backStackController::redo
+        )
+    }
+}
+
+@Composable
+private fun EditorToolbarCanvasGroup(state: EditorState.Edit) {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        val modifier = Modifier.size(32.dp)
+
+        ToolbarIconButton(
+            modifier,
+            icon = R.drawable.editor_toolbar_delete,
+            onClick = state::removeCanvas
+        )
+        ToolbarIconButton(
+            modifier,
+            icon = R.drawable.editor_toolbar_add,
+            onClick = state::addCanvas
+        )
+        ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_layers) {}
+    }
+}
+
+@Composable
+private fun EditorToolbarPlaybackGroup(state: EditorState) {
+    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        val modifier = Modifier.size(32.dp)
+
+        ToolbarIconButton(
+            modifier,
+            icon = R.drawable.editor_toolbar_stop,
+            enabled = state is EditorState.View,
+            onClick = state.onSwitchState
+        )
+        ToolbarIconButton(
+            modifier,
+            icon = R.drawable.editor_toolbar_play,
+            enabled = state is EditorState.Edit,
+            onClick = state.onSwitchState
+        )
     }
 }
 
@@ -94,7 +126,12 @@ private fun ToolbarIconButton(
 
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
-private fun EditorToolbarPreview() {
-    val state = EditorState()
-    EditorToolbar(state = state, backStackController = BackStackController(state))
+private fun EditorToolbarEditPreview() {
+    EditorToolbar(state = EditorState.Edit {})
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
+@Composable
+private fun EditorToolbarViewPreview() {
+    EditorToolbar(state = EditorState.View(emptyList()) {})
 }

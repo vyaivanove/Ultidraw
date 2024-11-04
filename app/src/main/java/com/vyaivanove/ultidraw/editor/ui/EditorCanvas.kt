@@ -38,31 +38,42 @@ fun EditorCanvas(
             contentDescription = null
         )
 
-        state.previousCanvasState?.let {
-            Canvas(
-                modifier = Modifier
-                    .matchParentSize()
-                    .alpha(0.5f),
-                paths = it.paths
-            )
+        if (state is EditorState.Edit) {
+            state.previousCanvasState?.let {
+                Canvas(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .alpha(0.5f),
+                    paths = it.paths
+                )
+            }
         }
 
         Canvas(
+            paths = state.canvasState.paths,
             modifier = Modifier
                 .matchParentSize()
-                .pointerInput(Unit) {
-                    detectDragGestures(
-                        onDragStart = {
-                            val path =
-                                EditorPath(position = it, tool = state.toolState.selectedTool)
-                            state.canvasState.addPath(path)
-                        },
-                        onDrag = { _, position ->
-                            state.canvasState.updatePath(position)
+                .run {
+                    if (state is EditorState.Edit) {
+                        pointerInput(Unit) {
+                            detectDragGestures(
+                                onDragStart = {
+                                    val path =
+                                        EditorPath(
+                                            position = it,
+                                            tool = state.toolState.selectedTool
+                                        )
+                                    state.canvasState.addPath(path)
+                                },
+                                onDrag = { _, position ->
+                                    state.canvasState.updatePath(position)
+                                }
+                            )
                         }
-                    )
-                },
-            paths = state.canvasState.paths
+                    } else {
+                        this
+                    }
+                }
         )
     }
 }
@@ -98,5 +109,5 @@ private fun Canvas(
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
 private fun EditorCanvasPreview() {
-    EditorCanvas(state = EditorState())
+    EditorCanvas(state = EditorState.Edit {})
 }

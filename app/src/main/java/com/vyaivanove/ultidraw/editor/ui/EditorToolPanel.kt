@@ -28,7 +28,7 @@ import com.vyaivanove.ultidraw.ui.theme.toolColor
 @Composable
 fun EditorToolPanel(
     modifier: Modifier = Modifier,
-    state: EditorState
+    state: EditorState.Edit
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -112,5 +112,5 @@ private fun EditorToolPanelColorPickerButton(
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
 private fun EditorToolPanelPreview() {
-    EditorToolPanel(state = EditorState())
+    EditorToolPanel(state = EditorState.Edit {})
 }

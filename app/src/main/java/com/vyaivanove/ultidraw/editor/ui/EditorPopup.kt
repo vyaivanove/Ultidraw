@@ -16,7 +16,7 @@ import com.vyaivanove.ultidraw.editor.ui.popup.EditorToolEditor
 import com.vyaivanove.ultidraw.ui.theme.popupBackgroundColor
 
 @Composable
-fun EditorPopup(modifier: Modifier = Modifier, state: EditorState) {
+fun EditorPopup(modifier: Modifier = Modifier, state: EditorState.Edit) {
     val modifier = modifier
         .background(color = popupBackgroundColor, shape = RoundedCornerShape(4.dp))
         .padding(16.dp)

@@ -7,27 +7,52 @@ import androidx.compose.runtime.setValue
 import com.vyaivanove.ultidraw.util.DoublyLinkedList
 import com.vyaivanove.ultidraw.util.DoublyLinkedList.Node
 
-class EditorState {
-    // To allow for storage of more than Int.MAX_VALUE entries
-    private var canvasStates = DoublyLinkedList<EditorCanvasState>().apply {
-        addFirst(EditorCanvasState())
+sealed class EditorState() {
+    abstract val canvasStates: Collection<EditorCanvasState>
+    abstract val canvasState: EditorCanvasState
+    abstract val onSwitchState: () -> Unit
+
+    class Edit(override val onSwitchState: () -> Unit) : EditorState() {
+        // To allow for storage of more than Int.MAX_VALUE entries
+        override var canvasStates = DoublyLinkedList<EditorCanvasState>().apply {
+            addFirst(EditorCanvasState())
+        }
+        override val canvasState by derivedStateOf { canvasNode.value }
+
+        private var canvasNode by mutableStateOf<Node<EditorCanvasState>>(canvasStates.first()!!)
+
+        val previousCanvasState by derivedStateOf { canvasNode.previous()?.value }
+
+        val toolState = EditorToolState()
+        val popupState = EditorPopupState()
+        val backStackController = BackStackController(this)
+
+        fun addCanvas() {
+            canvasNode = canvasStates.addAfter(canvasNode, EditorCanvasState())
+        }
+
+        fun removeCanvas() {
+            canvasNode =
+                canvasNode.previous() ?: canvasStates.addBefore(canvasNode, EditorCanvasState())
+
+            canvasStates.remove(canvasNode.next()!!)
+        }
     }
-    private var canvasNode by mutableStateOf<Node<EditorCanvasState>>(canvasStates.first()!!)
 
-    val previousCanvasState by derivedStateOf { canvasNode.previous()?.value }
-    val canvasState by derivedStateOf { canvasNode.value }
+    class View(
+        override val canvasStates: Collection<EditorCanvasState>,
+        override val onSwitchState: () -> Unit
+    ) : EditorState() {
+        private var iterator = canvasStates.iterator()
 
-    val toolState = EditorToolState()
-    val popupState = EditorPopupState()
+        override var canvasState: EditorCanvasState by mutableStateOf<EditorCanvasState>(iterator.next())
+            private set
 
-    fun addCanvas() {
-        canvasNode = canvasStates.addAfter(canvasNode, EditorCanvasState())
-    }
-
-    fun removeCanvas() {
-        canvasNode =
-            canvasNode.previous() ?: canvasStates.addBefore(canvasNode, EditorCanvasState())
-
-        canvasStates.remove(canvasNode.next()!!)
+        fun tick() {
+            if (!iterator.hasNext()) {
+                iterator = canvasStates.iterator()
+            }
+            canvasState = iterator.next()
+        }
     }
 }

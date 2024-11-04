@@ -26,7 +26,6 @@ class EditorDialogState {
         state = States.GenerateCanvas
     }
 
-
     fun showFrameRate() {
         state = States.FrameRate
     }

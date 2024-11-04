@@ -10,6 +10,7 @@ class EditorPopupState {
         Closed,
         ColorPicker,
         ToolEditor,
+        FrameSelector,
     }
 
     var state by mutableStateOf(States.Closed)
@@ -25,7 +26,11 @@ class EditorPopupState {
     }
 
     fun showToolEditor() {
-        state = States.ToolEditor
+//        state = States.ToolEditor
+    }
+
+    fun showFrameSelector() {
+        state = States.FrameSelector
     }
 
     fun close() {

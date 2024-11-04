@@ -79,7 +79,7 @@ fun EditorCanvas(
 }
 
 @Composable
-private fun Canvas(
+fun Canvas(
     modifier: Modifier = Modifier,
     paths: List<EditorPath>
 ) {

@@ -21,6 +21,7 @@ import com.vyaivanove.ultidraw.R
 import com.vyaivanove.ultidraw.editor.controller.BackStackController
 import com.vyaivanove.ultidraw.editor.state.EditorState
 import com.vyaivanove.ultidraw.ui.theme.buttonColor
+import com.vyaivanove.ultidraw.util.DoublyLinkedList
 
 @Composable
 fun EditorToolbar(
@@ -88,7 +89,11 @@ private fun EditorToolbarCanvasGroup(state: EditorState.Edit) {
             icon = R.drawable.editor_toolbar_duplicate,
             onClick = state::duplicateCanvas
         )
-        ToolbarIconButton(modifier, icon = R.drawable.editor_toolbar_layers) {}
+        ToolbarIconButton(
+            modifier,
+            icon = R.drawable.editor_toolbar_layers,
+            onClick = state.popupState::showFrameSelector
+        )
     }
 }
 
@@ -149,5 +154,5 @@ private fun EditorToolbarEditPreview() {
 @Preview(showBackground = true, backgroundColor = 0xFF000000, showSystemUi = true)
 @Composable
 private fun EditorToolbarViewPreview() {
-    EditorToolbar(state = EditorState.View(emptyList()) {})
+    EditorToolbar(state = EditorState.View(DoublyLinkedList()) {})
 }

@@ -1,7 +1,7 @@
 package com.vyaivanove.ultidraw.util
 
 @Suppress("UNUSED")
-class DoublyLinkedList<T> : Collection<T> {
+class DoublyLinkedList<T> {
     private var head: MutableNode<T>? = null
     private var tail: MutableNode<T>? = null
 
@@ -20,15 +20,7 @@ class DoublyLinkedList<T> : Collection<T> {
         override fun previous(): Node<T>? = previousNode
     }
 
-    override var size: Int = 0
-
-    override fun contains(element: T): Boolean = iterator().asSequence().contains(element)
-
-    override fun containsAll(elements: Collection<T>): Boolean = elements.all(::contains)
-
-    override fun isEmpty(): Boolean = head == null
-
-    override fun iterator(): Iterator<T> = iterator {
+    fun iterator(): Iterator<T> = iterator {
         var node = head
 
         while (node != null) {
@@ -49,8 +41,6 @@ class DoublyLinkedList<T> : Collection<T> {
             tail = node
         }
 
-        size++
-
         return node
     }
 
@@ -66,8 +56,6 @@ class DoublyLinkedList<T> : Collection<T> {
             head = node
         }
 
-        size++
-
         return node
     }
 
@@ -77,8 +65,6 @@ class DoublyLinkedList<T> : Collection<T> {
         if (head == null) {
             tail = null
         }
-
-        size--
     }
 
     fun removeLast() {
@@ -87,15 +73,11 @@ class DoublyLinkedList<T> : Collection<T> {
         if (tail == null) {
             head = null
         }
-
-        size--
     }
 
     fun clear() {
         head = null
         tail = null
-
-        size = 0
     }
 
     fun first(): Node<T>? = head
@@ -116,8 +98,6 @@ class DoublyLinkedList<T> : Collection<T> {
             tail = newNode
         }
 
-        size++
-
         return newNode
     }
 
@@ -135,8 +115,6 @@ class DoublyLinkedList<T> : Collection<T> {
             head = newNode
         }
 
-        size++
-
         return newNode
     }
 
@@ -153,7 +131,6 @@ class DoublyLinkedList<T> : Collection<T> {
 
         head = null
         tail = null
-        size--
     }
 
     fun removeAfter(node: Node<T>) {
@@ -165,8 +142,6 @@ class DoublyLinkedList<T> : Collection<T> {
         if (node.nextNode == null) {
             tail = node
         }
-
-        size--
     }
 
     fun removeBefore(node: Node<T>) {
@@ -178,7 +153,5 @@ class DoublyLinkedList<T> : Collection<T> {
         if (node.previousNode == null) {
             head = node
         }
-
-        size--
     }
 }

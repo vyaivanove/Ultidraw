@@ -37,7 +37,7 @@ class DoublyLinkedList<T> : Collection<T> {
         }
     }
 
-    fun addFirst(element: T) {
+    fun addFirst(element: T): Node<T> {
         val node = MutableNode(value = element)
 
         node.nextNode = head
@@ -50,9 +50,11 @@ class DoublyLinkedList<T> : Collection<T> {
         }
 
         size++
+
+        return node
     }
 
-    fun addLast(element: T) {
+    fun addLast(element: T): Node<T> {
         val node = MutableNode(value = element)
 
         node.previousNode = tail
@@ -65,6 +67,8 @@ class DoublyLinkedList<T> : Collection<T> {
         }
 
         size++
+
+        return node
     }
 
     fun removeFirst() {
@@ -85,6 +89,13 @@ class DoublyLinkedList<T> : Collection<T> {
         }
 
         size--
+    }
+
+    fun clear() {
+        head = null
+        tail = null
+
+        size = 0
     }
 
     fun first(): Node<T>? = head

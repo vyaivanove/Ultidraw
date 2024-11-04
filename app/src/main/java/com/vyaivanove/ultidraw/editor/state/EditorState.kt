@@ -43,6 +43,12 @@ sealed class EditorState() {
 
             canvasStates.remove(canvasNode.next()!!)
         }
+
+        fun clear() {
+            canvasStates.clear()
+
+            canvasNode = canvasStates.addFirst(EditorCanvasState())
+        }
     }
 
     class View(

@@ -1,7 +1,8 @@
-package com.vyaivanove.ultidraw.editor.state
+package com.vyaivanove.ultidraw.editor.controller
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import com.vyaivanove.ultidraw.editor.state.EditorState
 
 class BackStackController(
     private val editorState: EditorState

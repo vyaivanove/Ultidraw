@@ -1,10 +1,11 @@
-package com.vyaivanove.ultidraw.editor.state
+package com.vyaivanove.ultidraw.editor.viewmodel
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.vyaivanove.ultidraw.editor.state.EditorState
 
 class EditorViewModel : ViewModel() {
     private val editState = EditorState.Edit {

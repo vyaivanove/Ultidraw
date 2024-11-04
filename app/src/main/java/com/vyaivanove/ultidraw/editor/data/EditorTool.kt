@@ -1,4 +1,4 @@
-package com.vyaivanove.ultidraw.editor.state
+package com.vyaivanove.ultidraw.editor.data
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange

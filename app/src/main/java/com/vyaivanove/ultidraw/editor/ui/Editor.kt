@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vyaivanove.ultidraw.editor.state.EditorState
-import com.vyaivanove.ultidraw.editor.state.EditorViewModel
+import com.vyaivanove.ultidraw.editor.viewmodel.EditorViewModel
 import com.vyaivanove.ultidraw.ui.theme.Theme
 import kotlinx.coroutines.delay
 

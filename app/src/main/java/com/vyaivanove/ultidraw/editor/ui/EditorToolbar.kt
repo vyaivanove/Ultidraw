@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.vyaivanove.ultidraw.R
-import com.vyaivanove.ultidraw.editor.state.BackStackController
+import com.vyaivanove.ultidraw.editor.controller.BackStackController
 import com.vyaivanove.ultidraw.editor.state.EditorState
 import com.vyaivanove.ultidraw.ui.theme.buttonColor
 

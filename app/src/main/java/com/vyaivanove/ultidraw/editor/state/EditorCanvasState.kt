@@ -4,6 +4,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.geometry.Offset
+import com.vyaivanove.ultidraw.editor.data.EditorPath
 
 class EditorCanvasState(val paths: MutableList<EditorPath> = mutableStateListOf<EditorPath>()) {
     private val undonePaths = mutableStateListOf<EditorPath>()

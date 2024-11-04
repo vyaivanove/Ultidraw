@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import com.vyaivanove.ultidraw.editor.data.EditorTool
 
 class EditorToolState {
     val tools = mutableStateListOf<EditorTool>(

@@ -37,7 +37,7 @@ fun EditorPopup(modifier: Modifier = Modifier, state: EditorState.Edit) {
             }
 
             ToolEditor -> EditorToolEditor(modifier = modifier)
-            else -> Unit // Unreachable
+            Closed -> Unit // Unreachable
         }
     }
 }

@@ -39,25 +39,31 @@ fun Editor() {
 
     Theme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                EditorToolbar(state = state)
-                Box {
-                    EditorCanvas(state = state)
+            Box {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    EditorToolbar(state = state)
+                    Box {
+                        EditorCanvas(state = state)
 
-                    if (state is EditorState.Edit && state.popupState.isVisible) {
-                        EditorPopup(state = state)
+                        if (state is EditorState.Edit && state.popupState.isVisible) {
+                            EditorPopup(state = state)
+                        }
+                    }
+                    if (state is EditorState.Edit) {
+                        EditorToolPanel(state = state)
+                    } else {
+                        Spacer(modifier = Modifier.height(32.dp))
                     }
                 }
-                if (state is EditorState.Edit) {
-                    EditorToolPanel(state = state)
-                } else {
-                    Spacer(modifier = Modifier.height(32.dp))
+
+                if (state is EditorState.Edit && state.dialogState.isVisible) {
+                    EditorDialog(state = state)
                 }
             }
         }

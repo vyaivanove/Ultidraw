@@ -75,12 +75,13 @@ private fun EditorToolbarCanvasGroup(state: EditorState.Edit) {
             modifier,
             icon = R.drawable.editor_toolbar_delete,
             onClick = state::removeCanvas,
-            onLongClick = state::clear
+            onLongClick = state.dialogState::showClearEditor
         )
         ToolbarIconButton(
             modifier,
             icon = R.drawable.editor_toolbar_add,
-            onClick = state::addCanvas
+            onClick = state::addCanvas,
+            onLongClick = state.dialogState::showGenerateCanvas
         )
         ToolbarIconButton(
             modifier,

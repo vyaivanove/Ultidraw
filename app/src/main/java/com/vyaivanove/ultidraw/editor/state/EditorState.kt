@@ -4,10 +4,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
 import com.vyaivanove.ultidraw.editor.controller.BackStackController
+import com.vyaivanove.ultidraw.editor.data.EditorPath
 import com.vyaivanove.ultidraw.editor.state.EditorCanvasState.Companion.shallowCopy
 import com.vyaivanove.ultidraw.util.DoublyLinkedList
 import com.vyaivanove.ultidraw.util.DoublyLinkedList.Node
+import com.vyaivanove.ultidraw.util.createRandomFrames
 
 sealed class EditorState() {
     abstract val canvasStates: Collection<EditorCanvasState>
@@ -27,6 +30,7 @@ sealed class EditorState() {
 
         val toolState = EditorToolState()
         val popupState = EditorPopupState()
+        val dialogState = EditorDialogState()
         val backStackController = BackStackController(this)
 
         fun addCanvas() {
@@ -42,6 +46,19 @@ sealed class EditorState() {
                 canvasNode.previous() ?: canvasStates.addBefore(canvasNode, EditorCanvasState())
 
             canvasStates.remove(canvasNode.next()!!)
+        }
+
+        fun generateCanvas(frameCount: UInt) {
+            createRandomFrames(frameCount) {
+                addCanvas()
+                canvasState.addPath(
+                    EditorPath(
+                        path = it,
+                        tool = toolState.selectedTool,
+                        previousPosition = Offset.Unspecified
+                    )
+                )
+            }
         }
 
         fun clear() {

@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.vyaivanove.ultidraw.editor.data.EditorSettings
 import com.vyaivanove.ultidraw.editor.state.EditorState
 
 class EditorViewModel : ViewModel() {
@@ -18,4 +19,6 @@ class EditorViewModel : ViewModel() {
     }
 
     val state by derivedStateOf { viewState ?: editState }
+
+    val settings = EditorSettings()
 }

@@ -19,19 +19,16 @@ import com.vyaivanove.ultidraw.editor.viewmodel.EditorViewModel
 import com.vyaivanove.ultidraw.ui.theme.Theme
 import kotlinx.coroutines.delay
 
-private const val FRAME_RATE = 10L
-private const val DELAY_PER_FRAME = 1000L / FRAME_RATE
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun Editor() {
-    val stateHolder = viewModel<EditorViewModel>()
-    val state = stateHolder.state
+    val viewModel = viewModel<EditorViewModel>()
+    val state = viewModel.state
 
     if (state is EditorState.View) {
         LaunchedEffect(state) {
             while (true) {
-                delay(DELAY_PER_FRAME)
+                delay((1000uL / viewModel.settings.frameRate).toLong())
                 state.tick()
             }
         }
@@ -63,7 +60,7 @@ fun Editor() {
                 }
 
                 if (state is EditorState.Edit && state.dialogState.isVisible) {
-                    EditorDialog(state = state)
+                    EditorDialog(state = state, settings = viewModel.settings)
                 }
             }
         }

@@ -15,26 +15,31 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.vyaivanove.ultidraw.R
 
 @Composable
-fun EditorGenerateCanvasDialog(
+fun EditorFrameRateDialog(
     modifier: Modifier = Modifier,
+    currentFrameRate: ULong,
     onDismiss: () -> Unit,
-    onGenerate: (UInt) -> Unit
+    onSetFrameRate: (ULong) -> Unit
 ) {
-    var value by remember { mutableStateOf(TextFieldValue("1")) }
-    val count by remember { derivedStateOf { value.text.toUIntOrNull() } }
+    var value by remember { mutableStateOf(TextFieldValue(currentFrameRate.toString())) }
+    val frameRate by remember {
+        derivedStateOf {
+            value.text.toULongOrNull()?.takeUnless { it == 0uL }
+        }
+    }
 
     BasicConfirmationDialog(
         modifier = modifier,
-        text = stringResource(R.string.dialog_generate_canvas_text),
+        text = stringResource(R.string.dialog_frame_rate_text),
         onDismiss = onDismiss,
-        onConfirm = { onGenerate(count!!) },
-        isConfirmEnabled = count != null
+        onConfirm = { onSetFrameRate(frameRate!!) },
+        isConfirmEnabled = frameRate != null
     ) {
         TextField(
             value = value,
             onValueChange = { value = it },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            isError = count == null
+            isError = frameRate == null
         )
     }
 }

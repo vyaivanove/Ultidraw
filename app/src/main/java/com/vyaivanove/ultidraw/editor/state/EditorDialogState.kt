@@ -10,6 +10,7 @@ class EditorDialogState {
         Closed,
         ClearEditor,
         GenerateCanvas,
+        FrameRate,
     }
 
     var state by mutableStateOf(States.Closed)
@@ -23,6 +24,11 @@ class EditorDialogState {
 
     fun showGenerateCanvas() {
         state = States.GenerateCanvas
+    }
+
+
+    fun showFrameRate() {
+        state = States.FrameRate
     }
 
     fun close() {

@@ -107,7 +107,12 @@ private fun EditorToolbarPlaybackGroup(state: EditorState) {
             modifier,
             icon = R.drawable.editor_toolbar_play,
             enabled = state is EditorState.Edit,
-            onClick = state.onSwitchState
+            onClick = state.onSwitchState,
+            onLongClick = {
+                if (state is EditorState.Edit) {
+                    state.dialogState.showFrameRate()
+                }
+            }
         )
     }
 }

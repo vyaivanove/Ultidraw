@@ -2,4 +2,5 @@
 <resources>
     <string name="dialog_clear_editor_text">Are you sure you want to remove everything?</string>
     <string name="dialog_generate_canvas_text">How many frames to generate?</string>
+    <string name="dialog_frame_rate_text">What frame rate to use?</string>
 </resources>

@@ -9,14 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import com.vyaivanove.ultidraw.editor.data.EditorSettings
 import com.vyaivanove.ultidraw.editor.state.EditorDialogState.States.*
 import com.vyaivanove.ultidraw.editor.state.EditorState
 import com.vyaivanove.ultidraw.editor.ui.dialog.EditorClearDialog
+import com.vyaivanove.ultidraw.editor.ui.dialog.EditorFrameRateDialog
 import com.vyaivanove.ultidraw.editor.ui.dialog.EditorGenerateCanvasDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditorDialog(modifier: Modifier = Modifier, state: EditorState.Edit) {
+fun EditorDialog(modifier: Modifier = Modifier, state: EditorState.Edit, settings: EditorSettings) {
     BasicAlertDialog(
         onDismissRequest = state.dialogState::close,
         properties = DialogProperties(
@@ -28,9 +30,10 @@ fun EditorDialog(modifier: Modifier = Modifier, state: EditorState.Edit) {
             modifier = modifier,
             shape = RoundedCornerShape(16.dp)
         ) {
+            val dialogModifier = Modifier.padding(16.dp)
             when (state.dialogState.state) {
                 ClearEditor -> EditorClearDialog(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = dialogModifier,
                     onDismiss = state.dialogState::close
                 ) {
                     state.clear()
@@ -38,10 +41,19 @@ fun EditorDialog(modifier: Modifier = Modifier, state: EditorState.Edit) {
                 }
 
                 GenerateCanvas -> EditorGenerateCanvasDialog(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = dialogModifier,
                     onDismiss = state.dialogState::close
                 ) {
                     state.generateCanvas(it)
+                    state.dialogState.close()
+                }
+
+                FrameRate -> EditorFrameRateDialog(
+                    modifier = dialogModifier,
+                    currentFrameRate = settings.frameRate,
+                    onDismiss = state.dialogState::close,
+                ) {
+                    settings.setFrameRate(it)
                     state.dialogState.close()
                 }
 

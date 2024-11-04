@@ -15,8 +15,8 @@ private val POSITION_RANGE = 512.dp.value
 private val OFFSET_RANGE = 32f.dp.value
 
 private fun Random.nextDimension() = nextFloat() * DIMENSION_RANGE + DIMENSION_START
-private fun Random.nextPosition() = Random.nextFloat() * POSITION_RANGE + POSITION_START
-private fun Random.nextOffset() = (Random.nextFloat() - 0.5f) * OFFSET_RANGE
+private fun Random.nextPosition() = nextFloat() * POSITION_RANGE + POSITION_START
+private fun Random.nextOffset() = (nextFloat() - 0.5f) * OFFSET_RANGE
 
 private val FIGURE_GENERATORS: List<NativePath.(RectF) -> Unit> = listOf(
     { addCircle(it.centerX(), it.centerY(), minOf(it.width(), it.height()), DIR) },
@@ -36,7 +36,7 @@ internal inline fun createRandomFrames(count: UInt, onAddFrame: (Path) -> Unit) 
     val rectF = RectF(0f, 0f, width, height)
     rectF.offset(centerX, centerY)
 
-    (0u..<count).forEach {
+    (0u..<count).forEach { _ ->
         val path = NativePath()
         path.figureGenerator(rectF)
 

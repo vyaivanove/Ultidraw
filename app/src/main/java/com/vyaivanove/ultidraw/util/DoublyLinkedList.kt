@@ -86,7 +86,7 @@ class DoublyLinkedList<T> {
 
     fun addAfter(node: Node<T>, element: T): Node<T> {
         node as MutableNode<T>
-        val newNode = MutableNode<T>(value = element)
+        val newNode = MutableNode(value = element)
 
         newNode.nextNode = node.nextNode
         newNode.previousNode = node
@@ -103,7 +103,7 @@ class DoublyLinkedList<T> {
 
     fun addBefore(node: Node<T>, element: T): Node<T> {
         node as MutableNode<T>
-        val newNode = MutableNode<T>(value = element)
+        val newNode = MutableNode(value = element)
 
         newNode.previousNode = node.previousNode
         newNode.nextNode = node
@@ -133,7 +133,7 @@ class DoublyLinkedList<T> {
         tail = null
     }
 
-    fun removeAfter(node: Node<T>) {
+    private fun removeAfter(node: Node<T>) {
         node as MutableNode<T>
 
         node.nextNode = node.nextNode!!.nextNode
@@ -144,7 +144,7 @@ class DoublyLinkedList<T> {
         }
     }
 
-    fun removeBefore(node: Node<T>) {
+    private fun removeBefore(node: Node<T>) {
         node as MutableNode<T>
 
         node.previousNode = node.previousNode!!.previousNode

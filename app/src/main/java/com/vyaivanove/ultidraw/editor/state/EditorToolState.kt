@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import com.vyaivanove.ultidraw.editor.data.EditorTool
 
 class EditorToolState {
-    val tools = mutableStateListOf<EditorTool>(
+    val tools = mutableStateListOf(
         EditorTool.pencil(strokeWidth = 10f, color = Color.Red),
         EditorTool.highlighter(strokeWidth = 20f, color = Color.Yellow),
         EditorTool.eraser(strokeWidth = 50f),
@@ -22,8 +22,8 @@ class EditorToolState {
         selectedTool = tool
     }
 
-    fun editTool(strokeWidth: Float) = updateTool {
-        val style = it.style.let {
+    fun editTool(strokeWidth: Float) = updateTool { tool ->
+        val style = tool.style.let {
             Stroke(
                 width = strokeWidth,
                 miter = it.miter,
@@ -32,7 +32,7 @@ class EditorToolState {
                 pathEffect = it.pathEffect
             )
         }
-        it.copy(style = style)
+        tool.copy(style = style)
     }
 
     fun changeColor(color: Color) = updateTool {
